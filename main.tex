@@ -1,0 +1,624 @@
+% arara: xelatex
+\documentclass[a4paper,UTF8]{ctexart}
+
+\usepackage{geometry}
+\geometry{
+  % showframe,
+  headheight  = 0.6cm,
+  headsep     = 0.6cm,
+  footskip    = 1.2cm,
+  inner       = 2.0cm,
+  outer       = 2.0cm,
+  top         = 2.8cm,
+  bottom      = 2.8cm,
+  nomarginpar,
+}
+
+\usepackage{calc}
+\usepackage{multicol,booktabs}
+\usepackage{pstricks,listings}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{makecell}
+\definecolor{OceanBlue}{RGB}{0,77,128}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{siunitx}
+\sisetup{
+  number-math-rm = \mathnormal,
+  inter-unit-product=\,,
+  per-mode = reciprocal,
+  separate-uncertainty = false,
+  range-units = single
+}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\unimathsetup{
+  math-style = ISO,
+  bold-style = ISO,
+  nabla      = upright,
+  partial    = italic,
+}
+\setmainfont{lmroman10}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+\setsansfont{lmsans10}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-oblique,
+  BoldItalicFont = *-boldoblique,
+]%
+\setmonofont{lmmonolt10}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-oblique,
+  BoldItalicFont = *-boldoblique,
+  ]%
+\setmathfont{latinmodern-math.otf}%
+
+\usepackage{newunicodechar}
+\newunicodechar{ﬀ}{ff}
+\newunicodechar{ﬁ}{fi}
+\newunicodechar{ﬂ}{fl}
+\newunicodechar{ﬃ}{ffi}
+\newunicodechar{ﬄ}{ffl}
+
+\setCJKmainfont{Songti SC}[
+  UprightFont    = * Regular,
+  % UprightFont    = * Light,
+  BoldFont       = * Bold,
+  % BoldFont       = * Black,
+  ItalicFont     = Kaiti SC Regular,
+  BoldItalicFont = Kaiti SC Bold,
+]%
+\setCJKsansfont{Heiti SC}[BoldFont=* Medium]%
+\setCJKmonofont{STFangsong}
+\setCJKfamilyfont{zhsong}{Songti SC}[
+  UprightFont = * Regular,
+  BoldFont  = * Bold,
+]%
+\setCJKfamilyfont{zhhei}{Heiti SC}[
+  UprightFont = * Light,
+  BoldFont    = * Medium,
+]%
+\setCJKfamilyfont{zhfs}{STFangsong}%
+\setCJKfamilyfont{zhkai}{Kaiti SC}[BoldFont = * Bold]%
+\setCJKfamilyfont{zhli}{Baoli SC}%
+\setCJKfamilyfont{zhyuan}{Yuanyi SC}[
+  UprightFont = * Light,
+  BoldFont    = * Bold,
+]%
+\everymath{\displaystyle}
+
+\setmathfont{STIX2Math}[
+    Extension    = .otf,
+    StylisticSet = 8,
+    range="25B1,
+]%
+
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset { %
+  language=C++,
+  style=mystyle,
+  numbers=none,
+    % backgroundcolor=\color{black!5}, % set backgroundcolor
+    % keywordstyle={\ttfamily\color{blue}},
+    % basicstyle={\ttfamily\color},% basic font setting
+}
+
+\begin{document}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+
+% \title{课件习题汇总}
+% \date{}
+% \maketitle
+% \vspace{-2cm}
+
+\setcounter{section}{2}
+\section{Lecture 3}
+
+\subsection{基本输入输出操作}
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item Insertion operator: \lstinline{std::cout} 与 extraction operator
+  \lstinline{std::cin}.
+\item 格式化输出需要 \lstinline{#include <iomanip>}. \lstinline{std::setw()} 用
+  于设置输出宽度. \lstinline{std::setprecision()} 设置保留的有效位数, 与
+  \lstinline{std::fixed} 组合设置保留小数点后的位数. \lstinline{std::setiosflags(std::ios::left)} 使输出左对齐.
+\item 转义字符、脱字符 \lstinline{\n \' \\ \b \t \" \?} 等.
+\end{itemize}
+
+\subsection{C++ 的简单计算}
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 算数算符 \lstinline{+ - * /} 等.
+\item 常量修饰符, 也是 C++ 的一个关键词 \lstinline{const}.
+\item 求余算符 \lstinline{%}, 表达式必须为整数类型.
+\item 增减算符 \lstinline{++}, \lstinline{--}, 以及 \lstinline{+= -= *= /=} 等.
+\item 算符的优先级(precedence 小的优先, 对于相同的 precedence, associativity 表
+  示运算优先的一侧):
+  \vspace{-5pt}
+  \begin{center}
+  \begin{tabularx}{\textwidth}{| X | l | X |}
+  \hline
+   precedence & operators & associativity \\ \hline
+   1 & \lstinline$::$ & None \\ \hline
+   2 & \lstinline$()$ \quad \lstinline$[]$ \quad \lstinline$->$ \quad
+   \lstinline$.$ \quad \lstinline$typeid$ \quad 后缀 \lstinline$++$ \quad
+   \lstinline$--$ & Left \\
+   & \lstinline$const_cast$ \quad \lstinline$dynamic_cast$ \quad
+   \lstinline$static_cast$ \quad \lstinline$reinterpret_cast$ & \\ \hline
+   3 & 逻辑否 \lstinline$!$ \quad 补 \lstinline$\~$ \quad 一元 \lstinline$+$
+   \quad \lstinline$-$ \quad 前缀 \lstinline$++$ \quad \lstinline$--$ & Right \\
+   & 取地址 \lstinline$\&$ \quad 取值 \lstinline$*$ \quad 旧式类型转换
+   \lstinline$(type)$ & \\
+   & \lstinline$sizeof$ \quad \lstinline$decltype$ & \\
+   & \lstinline$new$ \quad \lstinline$new[]$ \quad \lstinline$delete$ \quad
+   \lstinline$delete[]$ & \\ \hline
+   4 & \lstinline$.*$ \quad \lstinline$->*$ & Left \\ \hline
+   5 & \lstinline$*$ \quad \lstinline$/$ \quad \lstinline$\%$ & Left \\ \hline
+   6 & \lstinline$+$ \quad \lstinline$-$ & Left \\ \hline
+   7 & \lstinline$\<<$ \quad \lstinline$\>>$ & Left \\ \hline
+   8 & \lstinline$==$ \quad \lstinline$!=$ & Left \\ \hline
+   9 & \lstinline$\&$ & Left \\ \hline
+   10 & \lstinline$\^$ & Left \\ \hline
+   11 & \lstinline$|$ & Left \\ \hline
+   12 & \lstinline$\&\&$ & Left \\ \hline
+   13 & \lstinline$||$ & Left \\ \hline
+   14 & \lstinline$?:$ & Right \\ \hline
+   15 & \lstinline$=$ \quad \lstinline$*=$ \quad \lstinline$/=$ \quad
+   \lstinline$\%=$ \quad \lstinline$+=$ \quad \lstinline$-=$ \quad
+   \lstinline$\&=$ \quad \lstinline$\^=$ \quad \lstinline$|=$ \quad
+   \lstinline$\<<=$ \quad \lstinline$\>>=$ & Right \\ \hline
+   16 & \lstinline$throw$ & Right \\ \hline
+   17 & \lstinline$,$ & Left \\ \hline
+  \end{tabularx}
+  \end{center}
+  \vspace{-5pt}
+\item 类型转换 (converting \& casting). \\
+  隐式类型转换: 不同类型变量之间的运算, 将高阶的降为低阶来运算(若负的有符号变量降阶为无符号变量会出错):
+  \vspace{-5pt}
+  \begin{center}
+  \begin{tabularx}{\textwidth}{| X | X | X |}
+  \hline
+   1. \lstinline$long double$ & 2. \lstinline$double$ & 3. \lstinline$float$
+   \\ \hline
+   4. \lstinline$unsigned long long$ & 5. \lstinline$long long$ & \\ \hline
+   6. \lstinline$unsigned long$ & 7. \lstinline$long$ & \\ \hline
+   8. \lstinline$unsigned int$ & 9. \lstinline$int$ & 10. \lstinline$short int$ \\ \hline
+   11. \lstinline$char$ & 12. \lstinline$bool$ & \\ \hline
+  \end{tabularx}
+  \end{center}
+  \vspace{-5pt}
+  显式类型转换: \lstinline{static_cast<type>(expression)}.
+\item \lstinline{auto} 关键字.
+\item 使用 \lstinline{typeid(expression).name()} 获取表达式类型.
+\end{itemize}
+
+\subsection{位运算}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 6 个位算符的运算规则(这里的几元运算指有几个二进制数参与运算):
+\vspace{-5pt}
+\begin{center}
+\begin{tabularx}{\textwidth}{| l | X | X | X |}
+\hline
+二元 & \lstinline$\&$ 位与: 有 0 为 0, 否则为 1 & \lstinline$|$ 位或: 有 1 为 1, 否则为
+0 & \lstinline$\^$ 位异或: 相同为 0, 不同为 1 \\ \hline
+一元 & \lstinline$\~$ 取反  & \lstinline$\<<$ 左移: 左移 $n$ 位,
+末端补 0 & \lstinline$\>>$ 右移: 右移 $n$ 位, 末端补 0 \\ \hline
+\end{tabularx}
+\end{center}
+\vspace{-5pt}
+\end{itemize}
+
+\section{Lecture 4}
+
+\subsection{左值与右值 (lvalue \& rvalue)}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 左值: 持续性存储的数据.
+\item 右值: 暂时性存储的表达式结果.
+\end{itemize}
+
+\subsection{存储时间与作用域}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 存储时间:\\
+  (1) 自动存储时间 (automatic): 在代码块作用域(一堆大括号内)内声明的局部变量, 会
+  自动分配内存空间, 离开作用域后会自动归还内存空间. \\
+  (2) 静态存储时间 (static): 在文件或命名空间作用域声明的变量, 以及在代码块作用
+  域内用 \lstinline{static} 标识的变量, 它的内存空间会在整个程序运行的时间被它占
+  用. \\
+  (3) 动态存储时间 (dynamic): 用 \lstinline{new} 和 \lstinline{delete} 申请和归
+  还内存空间的变量, 在 \lstinline{new} 与 \lstinline{delete} 之间持续存在.
+\end{itemize}
+
+\subsection{枚举}
+
+通常 \lstinline{enumerator} 为 \lstinline{int} 类型, 如果不初始化, 第一个的值为 0, 之后的值比前面多 1.
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 旧式(大括号不表示作用域, 相当于 \lstinline{#define enumerator (constexpr)}):\\
+  \lstinline$enum name(optional) { enumerator = constexpr , enumerator = constexpr , ... };$ \\
+  \lstinline$enum name(optional) : type { enumerator = constexpr , enumerator = constexpr , ... };$
+\begin{lstlisting}
+enum color { red, yellow, green = 20, blue };
+color col = red;
+int n = blue; // n == 21
+\end{lstlisting}
+\item 新式(大括号表示作用域, 调用时使用 ):\\
+  \lstinline$enum class name(optional) { enumerator = constexpr , enumerator = constexpr , ... };$ \\
+  \lstinline$enum class name(optional) : type { enumerator = constexpr , enumerator = constexpr , ... };$
+\begin{lstlisting}
+enum class Color { red, green = 20, blue };
+Color r = Color::blue;
+switch(r)
+{
+    case Color::red  : std::cout << "red\n";   break;
+    case Color::green: std::cout << "green\n"; break;
+    case Color::blue : std::cout << "blue\n";  break;
+}
+// int n = r; // error: no implicit conversion from scoped enum to int
+int n = static_cast<int>(r); // OK, n = 21
+\end{lstlisting}
+\item 命名空间:\\
+(1) \lstinline{using namespace std;} \quad 可以使用所有头文件中包含的
+\lstinline{std} 中的内容, 使用时可省略 \lstinline{std::}. \\
+(2) \lstinline{using std::cout;} \quad 只使用 \lstinline{std::cout}, 使用时只有
+它省略 \lstinline{std::}.
+\end{itemize}
+
+\subsection{命名空间}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 命名空间的用法:\\
+(1) \lstinline{using namespace std;} \quad 可以使用所有头文件中包含的
+\lstinline{std} 中的内容, 使用时可省略 \lstinline{std::}. \\
+(2) \lstinline{using std::cout;} \quad 只使用 \lstinline{std::cout}, 使用时只有
+它省略 \lstinline{std::}.
+\item 声明命名空间: \lstinline$namespace ns_name { declarations };$
+\begin{lstlisting}
+#include <vector>
+ 
+namespace vec {
+    template< typename T >
+    class vector {
+        // ...
+    };
+} // of vec
+ 
+int main()
+{
+    std::vector<int> v1; // Standard vector.
+    vec::vector<int> v2; // User defined vector.
+    v1 = v2;             // Error: v1 and v2 are different object's type.
+    {
+        using namespace std;
+        vector<int> v3;  // Same as std::vector
+        v1 = v3; // OK
+    }
+    {
+        using vec::vector;
+        vector<int> v4;  // Same as vec::vector
+        v2 = v4; // OK
+    }
+    return 0;
+}
+\end{lstlisting}
+\item 多次声明一个命名空间(名字相同): 所有的东西都在是同一个命名空间. 例如
+  \lstinline{<iostream>} 中的 \lstinline{std} 和 \lstinline{<string>} 中的 \lstinline{std}.
+\end{itemize}
+
+\section{Lecture 5: 判断和循环}
+
+\subsection*{比较变量}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 6 个比较运算符: \lstinline{<} \quad \lstinline{>} \quad \lstinline{==}
+  \quad \lstinline{<=} \quad \lstinline{>=} \quad \lstinline{!=}
+\item 逻辑运算符: \lstinline{\&\&} \quad \lstinline{||} \quad \lstinline{!}
+\item \lstinline{if} 语句:
+\begin{lstlisting}
+if(boolean_expression 1) {
+   // Executes when the boolean expression 1 is true
+} else if( boolean_expression 2) {
+   // Executes when the boolean expression 2 is true
+} else if( boolean_expression 3) {
+   // Executes when the boolean expression 3 is true
+} else {
+   // executes when the none of the above condition is true.
+}
+\end{lstlisting}
+\item 条件运算符(三元运算符): \lstinline{condition ? expression 1 : expression 2;}
+\item \lstinline{switch} 语句:\\
+(1) 如果没有 \lstinline{break}, 程序在执行相应的 \lstinline{case} 后的语句后, 不
+会跳出大括号, 而是继续往下执行, 直到遇到 \lstinline{break} 或末尾的大括号.
+(2) 所有 \lstinline{constant-expression} 必须不同, 且必须是编译时可确定的整数值.
+\begin{lstlisting}
+switch(expression) {
+   // all the constant-expression must have distinct values.
+   case constant-expression 1 :
+      statement(s);
+      break; //optional
+   case constant-expression 2 :
+      statement(s);
+      break; //optional
+   // you can have any number of case statements.
+   default : //Optional
+      statement(s);
+}
+\end{lstlisting}
+\item \lstinline{goto} 语句(不建议使用):
+\begin{lstlisting}
+Syntax1      |   Syntax2
+----------------------------
+goto label;  |    label:  
+.            |    .
+.            |    .
+.            |    .
+label:       |    goto label;
+\end{lstlisting}
+\end{itemize}
+
+\section{Lecture 6: 循环语句}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item \lstinline{for} 语句:\\
+  (1) 在 \lstinline{statement} 内的 \lstinline{break} 语句会使程序直接跳出
+  \lstinline{for} 循环体.\\
+  (2) 在 \lstinline{statement} 内的 \lstinline{continue} 语句会使程序略过
+  \lstinline{statement} 内其他语句执行 \lstinline{iteration_expression}, 再判断
+  \lstinline{condition}, \dots \\
+  (3) \lstinline{break} 和 \lstinline{continue} 语句都只跳出它所在最里层的循环.\\
+  (4) \lstinline{condition} 为空, 等价于 \lstinline{condition} 为 \lstinline{true}.
+\begin{lstlisting}
+for ( init-statement ; condition ; iteration_expression ) { statement; }
+\end{lstlisting}
+\item \lstinline{while} 语句:\\
+如果 \lstinline{condition} 是形如 \lstinline{type var = x} 的声明语句, 则这个变
+量 \lstinline{var} 在每次循环时都会销毁和重建.
+\begin{lstlisting}
+while ( condition ) { statement; }
+\end{lstlisting}
+\item \lstinline{do-while} 语句(注意不要忘记最后的分号):
+\begin{lstlisting}
+do { statement; } while ( condition ) ;
+\end{lstlisting}
+\item 基于范围的 \lstinline{for} 循环:
+\begin{lstlisting}
+for ( range_declaration : range_expression ) loop_statement;
+\end{lstlisting}
+\begin{lstlisting}
+#include <iostream>
+#include <string>
+int main() 
+{
+    // the initializer may be a braced-init-list
+    for (int n : {0, 1, 2, 3, 4, 5})
+        std::cout << n << ' ';
+    std::cout << '\n';
+    // Iterating over array
+    int a[] = {0, 1, 2, 3, 4, 5};     
+    for (int n : a)
+        std::cout << n << ' ';
+    std::cout << '\n';
+    // Printing string characters
+    std::string str = "Geeks";
+    for (char c : str) 
+        std::cout << c << ' ';
+    std::cout << '\n';
+}
+\end{lstlisting}
+\end{itemize}
+
+\section{Lecture 7, 8, 9, 10, 11: 数组、字符串和指针}
+
+\subsection{数组}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 数组的声明: \lstinline{type arrayName [ arraySize ];} 
+\begin{lstlisting}
+double array[10];
+// length of initializer list must not exceed array length.
+double array[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+double array[] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+double array[5] = {}; // set all elements to 0.
+double array[5] = {0.5}; // set the first element to 0.5 and the rest to 0.
+\end{lstlisting}
+\item 数组的结构:
+  \vspace{-5pt}
+  \begin{center}
+  \begin{tabularx}{\textwidth}{| l | X | X | X | X | X |}
+  \hline
+   index & 0 & 1 & 2 & 3 & 4 \\ \hline
+   position & \makecell[l]{\lstinline$array + 0$ \\ \lstinline$\&array[0]$} &
+   \makecell[l]{\lstinline$array + 1$ \\ \lstinline$\&array[1]$} &
+   \makecell[l]{\lstinline$array + 2$ \\ \lstinline$\&array[2]$} &
+   \makecell[l]{\lstinline$array + 3$ \\ \lstinline$\&array[3]$} &
+   \makecell[l]{\lstinline$array + 4$ \\ \lstinline$\&array[4]$} \\ \hline
+   % value & \lstinline$*(array + 0)$ \qquad \lstinline$array[0]$ & \lstinline$*(array
+   % + 1)$ \qquad \lstinline$array[1]$ & \lstinline$*(array + 2)$ \qquad
+   % \lstinline$array[2]$ & \lstinline$*(array + 3)$ \qquad \lstinline$array[3]$ &
+   % \lstinline$*(array + 4)$ \qquad \lstinline$array[4]$ \\ \hline
+  \end{tabularx}
+  \end{center}
+  \vspace{-5pt}
+\item 二维数组的声明:
+\begin{lstlisting}
+int array[3][5];
+int array[3][5] = {};
+int a[3][5] = {  
+   {0, 1, 2, 3, 4} ,      /*  initializers for row indexed by 0 */
+   {5, 6, 7, 8, 9} ,      /*  initializers for row indexed by 1 */
+   {10, 11, 12, 13, 14}   /*  initializers for row indexed by 2 */
+};
+// equivalent to
+int a[3][5] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+int a[3][5] = {  
+   {0, 1, 2} ,            /*  rest unspecified elements are 0 */
+   {5, 6, 7, 8, 9} ,
+   {10, 11, 12, 13}       /*  rest unspecified elements are 0 */
+};
+\end{lstlisting}
+\item 二维数组的结构(地址):
+  \vspace{-5pt}
+  \begin{center}
+  \begin{tabularx}{\textwidth}{| l | X | X | X | X | X |}
+  \hline
+   index & 0 & 1 & 2 & 3 & 4 \\ \hline
+   0 & \makecell[l]{\lstinline$array+0$ \\ \lstinline$*(array+0)+0$ \\ \lstinline$array[0]$} &
+   \makecell[l]{\lstinline$*(array+0)+1$ \\ \lstinline$array[0]+1$} &
+   \makecell[l]{\lstinline$*(array+0)+2$ \\ \lstinline$array[0]+2$} &
+   \makecell[l]{\lstinline$*(array+0)+3$ \\ \lstinline$array[0]+3$} &
+   \makecell[l]{\lstinline$*(array+0)+4$ \\ \lstinline$array[0]+4$} \\ \hline
+   1 & \makecell[l]{\lstinline$array+1$ \\ \lstinline$*(array+1)+0$ \\ \lstinline$array[1]$} &
+   \makecell[l]{\lstinline$*(array+1)+1$ \\ \lstinline$array[1]+1$} &
+   \makecell[l]{\lstinline$*(array+1)+2$ \\ \lstinline$array[1]+2$} &
+   \makecell[l]{\lstinline$*(array+1)+3$ \\ \lstinline$array[1]+3$} &
+   \makecell[l]{\lstinline$*(array+1)+4$ \\ \lstinline$array[1]+4$} \\ \hline
+   2 & \makecell[l]{\lstinline$array+2$ \\ \lstinline$*(array+2)+0$ \\ \lstinline$array[2]$} &
+   \makecell[l]{\lstinline$*(array+2)+1$ \\ \lstinline$array[2]+1$} &
+   \makecell[l]{\lstinline$*(array+2)+2$ \\ \lstinline$array[2]+2$} &
+   \makecell[l]{\lstinline$*(array+2)+3$ \\ \lstinline$array[2]+3$} &
+   \makecell[l]{\lstinline$*(array+2)+4$ \\ \lstinline$array[2]+4$} \\ \hline
+  \end{tabularx}
+  \end{center}
+  \vspace{-5pt}
+\end{itemize}
+
+\subsection{C 式字符串}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item \lstinline{char} 类型数组可用于存储 C 式字符串, 字符序列后必须有一个空字符
+  \lstinline{'\0'}.
+\item 声明(必须留有一位保存 \lstinline{'\0'}):
+\begin{lstlisting}
+char city[11] = "Guang Dong";
+char city[] = "Guang Dong";
+\end{lstlisting}
+\item 字符串输入:
+\begin{lstlisting}
+const int MAX = 80;
+char name[MAX];
+cin.getline(name, MAX, '\n');
+\end{lstlisting}
+\item 二维字符数组存储多个 C 式字符串:
+\begin{lstlisting}
+char stars[6][80] = { "Robert Redford",
+                      "Hopalong Cassidy",
+                      "Lassie",
+                      "Slim Pickens",
+                      "Boris Karloff",
+                      "Oliver Hardy"
+                    };
+\end{lstlisting}
+\end{itemize}
+
+\subsection{间接数据访问(指针)}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 指针是存储给定类型变量地址的变量.
+\item 声明:
+\begin{lstlisting}
+long* pnumber;
+long* pnumber, number{99};
+long* pnumber = &number;
+\end{lstlisting}
+\item 引用运算符(取地址运算符) \lstinline{\&} \quad 解引用运算符(间接寻址运算符)
+  \lstinline{*}.
+\item 区别 \lstinline{*} 的三种用途:
+\begin{lstlisting}
+a * b;  // multiply operator
+int *p; // pointer definition symbol
+a = *p; // dereference operator
+\end{lstlisting}
+\item 指向 \lstinline{char} 的指针(双引号内的字符串成为字符字面量, 前面的指针最
+  好加上修饰符 \lstinline{const}):
+\begin{lstlisting}
+const char *proverb {"A miss is as good as a mile."};
+\end{lstlisting}
+\item 指针与 \lstinline{const} (判断标准为 \lstinline{const} 与 \lstinline{*} 的
+  次序):\\
+(1) \lstinline{const} 位于 \lstinline{*} 之前: \lstinline{const int * p = &a;}
+与 \lstinline{int const * p = &a;} 等价, 都表示 \lstinline{p} 指向变量的值不能通过
+\lstinline{p} 改变, 但 \lstinline{p} 可以指向别处.\\
+(2) \lstinline{const} 位于 \lstinline{*} 之后: \lstinline{int * const p = &a;},
+表示 \lstinline{p} 不能指向别处, 但可以通过 \lstinline{p} 改变指向变量的值.
+(3) \lstinline{*} 左右都有 \lstinline{const}: 既不能改变 \lstinline{p} 的指向,
+也不能通过 \lstinline{p} 改变所指变量的值.
+注意: 变量的值是可以通过其他方式改变的, 这里只是讲通过指针能否改变.
+\end{itemize}
+
+\subsection{动态内存分配}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 动态存储期的变量使用的内存空间称为堆 (heap) 或自由存储区 (free store).
+\item \lstinline{new} 与 \lstinline{delete} 算符(多维数组的
+  \lstinline{delete} 后仍只有一个 \lstinline{[]}):
+\begin{lstlisting}
+pointer = new type;
+pointer = new type [number_of_elements];
+delete pointer;
+delete[] pointer;
+\end{lstlisting}
+\end{itemize}
+
+\subsection{引用}
+
+\subsubsection*{(左值)引用}
+
+\begin{itemize}[leftmargin=0pt, rightmargin=0cm, labelwidth=0.8cm, labelsep=0.2cm]
+\item 左值引用 (通常所说的引用) 是某个变量的别名, 可以出现在赋值号的左边. 另外,
+  引用不能更改它引用的对象.
+\item 左值引用的声明与初始化:
+\begin{lstlisting}
+int i = 17;
+int& r = i;              // declare a reference to variable i
+int& rfive = 5;          // will not compile!
+const int& rfive = 5;    // OK!
+\end{lstlisting}
+\item 引用与指针的差异:\\
+  (1) 没有空引用, 但可以有空指针. 引用必须是参考某个实际变量.\\
+  (2) 一旦引用被赋予某个对象后, 不能改变它来引用另一个对象. 而指针可以在任何时候
+  指向其他任何变量.\\
+  (3) 引用在创造的时候就必须初始化, 但指针可在其他时候初始化.\\
+  (4) 指针必须通过解引用(使用算符 \lstinline{*})来获取它所指变量的内容, 但引用不
+  需要.
+\end{itemize}
+
+\subsubsection*{右值引用}
+
+
+\end{document}
